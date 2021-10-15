@@ -1,29 +1,59 @@
 import { useEffect, useState } from "react";
 import FirebaseInit from "../firebase/firebase.init";
-import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, GithubAuthProvider, onAuthStateChanged, sendEmailVerification } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, GithubAuthProvider, onAuthStateChanged, sendEmailVerification } from "firebase/auth";
 
 FirebaseInit()
 
  const useFirebase = () => {
      const [user, setUser ] = useState({});
      const [error, setError] = useState("");
-     const [meal, setMeal] = useState("");
      const [email, setEmail] = useState("");
-     const [ password, setPassword] = useState("");
+     const [password, setPassword] = useState("");
+     const [isRegis, setIsRegis] = useState(false);
 
      const auth = getAuth();
      
-    //  console.log("auth:", auth);
-     const creatUser = () => {
-        createUserWithEmailAndPassword(auth, email, password)
-        .then(response => {
-            setUser(response);
-            console.log(email, password);
-        })
-        .catch(error => {
-            setError(error.code);
-        })
+
+
+    //  Log In Form ========================================
+   
+     const handleCreatUser = event => {
+         event.preventDefault();
+         createUserWithEmailAndPassword(auth, email, password)
+         .then(userCredential => console.log(userCredential))
+         .catch(error => {
+            setError(error);
+            // console.log(error.code);
+         });
+         console.log(email, password);
      }
+
+     const loginEmailPassword = (event) => {
+        event.preventDefault();
+        signInWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+            setUser(userCredential);
+        })
+        .catch(error => setError(error))
+     }
+
+    //  TAKING INPUT VALUE ANP PUSHING INTO STATE 
+     const handleEmail = event => {
+        setEmail(event.target.value)
+     }
+
+     const handlePassword = event => {
+        setPassword(event.target.value)
+     }
+     const handleCheckBox = event => {
+         setIsRegis(event.target.checked);
+         console.log(isRegis);
+     }
+
+    // ***
+
+
+    //  Popup Sign In =====================================
 
      const googleSignIn = () => {
         const googleProvider = new GoogleAuthProvider();
@@ -41,12 +71,14 @@ FirebaseInit()
          verifyEmail();
      }
 
+    //  Email verification =================================
      const verifyEmail = () =>{
         sendEmailVerification(auth.currentUser)
         .then(result => console.log(result))
         .catch(error => console.log( error))
      }
 
+    //  Log Out ============================================
      const logOut = () => {
          signOut(auth)
          .then(() => {})
@@ -57,10 +89,10 @@ FirebaseInit()
      useEffect((user) => {
         onAuthStateChanged(auth, (user) => {
             if(user){
-                console.log("user from useEffect", user);
+                setUser(user);
             }
             else{
-                console.log("user is not avalable")
+                logOut();
             }
         })
      }, []);
@@ -74,10 +106,15 @@ FirebaseInit()
      return {
          user,
          error,
-         creatUser, 
+         isRegis,
+         handleCreatUser, 
          googleSignIn,
          searchMeals,
-         gitSignIn, 
+         handleEmail,
+         handlePassword,
+         gitSignIn,
+         handleCheckBox,
+         loginEmailPassword,
          logOut
         }
  
