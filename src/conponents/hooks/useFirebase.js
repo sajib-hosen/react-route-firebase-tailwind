@@ -56,10 +56,10 @@ FirebaseInit()
 
      const googleSignIn = () => {
         const googleProvider = new GoogleAuthProvider();
-        signInWithPopup(auth, googleProvider)
-        .then( result => setUser(result.user))
-        .catch(error => setError(error));
-        verifyEmail();
+        return signInWithPopup(auth, googleProvider);
+        // .then( result => setUser(result.user))
+        // .catch(error => setError(error));
+        // verifyEmail();
      }
 
      const gitSignIn = () => {

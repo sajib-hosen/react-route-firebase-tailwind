@@ -1,11 +1,24 @@
+import { useHistory, useLocation } from 'react-router';
 import useAuth from '../hooks/useAuth';
 import img from "../imgs/5645031.jpg"
 
 
 const Login = () => {
+    const location = useLocation();
+    const history = useHistory()
+    const redirect_url = location.state?.from || "/";
+    console.log("came from: ", location.state?.from);
     const { user, error, isRegis, loginEmailPassword, handleCheckBox, googleSignIn, gitSignIn, handleCreatUser, handleEmail, handlePassword } = useAuth();
     console.log(user);
     console.log(error.code);
+    const handleGoogleSignIn = () => {
+        googleSignIn()
+        .then(userCredential =>{
+            history.push(redirect_url);
+        })
+    }
+
+
     return (
         <div style={{ backgroundImage: `url(${img})`, backgroundAttachment: "fixed", backgroundRepeat: "no-repeat", backgroundSize: "cover" }} className="flex justify-center items-center p-44" >
 
@@ -23,7 +36,7 @@ const Login = () => {
                      <input onChange={handleCheckBox} type="checkbox" name="register" id="register" /></p>
                 </div>
                 <div>
-                    <h1 onClick={googleSignIn} className="px-1.5 text-white border-2 m-2 hover:shadow-2xl hover:bg-purple-900 hover:text-white transition duration-1000 ease-in-out text-center cursor-pointer">Google Sign In</h1>
+                    <h1 onClick={handleGoogleSignIn} className="px-1.5 text-white border-2 m-2 hover:shadow-2xl hover:bg-purple-900 hover:text-white transition duration-1000 ease-in-out text-center cursor-pointer">Google Sign In</h1>
                     <h1 className="px-1.5 text-white border-2 m-2 hover:shadow-2xl hover:bg-purple-900 hover:text-white transition duration-1000 ease-in-out text-center cursor-pointer">Yahoo Sign In</h1>
                     <h1 className="px-1.5 text-white border-2 m-2 hover:shadow-2xl hover:bg-purple-900 hover:text-white transition duration-1000 ease-in-out text-center cursor-pointer">Facebook Sign In</h1>
                     <h1 onClick={gitSignIn} className="px-1.5 text-white border-2 m-2 hover:shadow-2xl hover:bg-purple-900 hover:text-white transition duration-1000 ease-in-out text-center cursor-pointer">Github Sign In</h1>
