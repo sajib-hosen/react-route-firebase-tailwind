@@ -10,6 +10,7 @@ FirebaseInit()
      const [email, setEmail] = useState("");
      const [password, setPassword] = useState("");
      const [isRegis, setIsRegis] = useState(false);
+     const [meals, setMeals] = useState();
 
      const auth = getAuth();
      
@@ -49,8 +50,6 @@ FirebaseInit()
          setIsRegis(event.target.checked);
          console.log(isRegis);
      }
-
-    // ***
 
 
     //  Popup Sign In =====================================
@@ -96,20 +95,28 @@ FirebaseInit()
             }
         })
      }, []);
+     
 
-     const searchMeals = () => {
-         const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata`;
-         console.log(url)
-     }
+     const SearchMeals = event => {
+        const searchText = event.target.value;
+        const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchText}`;
+        console.log(url)
+        useEffect(() => {
+            fetch(url)
+            .then(res => res.json())
+            .then(data => setMeals(data))
+        },[searchText])
+    }
 
-    
+     
      return {
          user,
          error,
+         meals,
          isRegis,
          handleCreatUser, 
          googleSignIn,
-         searchMeals,
+         SearchMeals,
          handleEmail,
          handlePassword,
          gitSignIn,

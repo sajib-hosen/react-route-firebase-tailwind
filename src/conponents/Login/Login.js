@@ -1,9 +1,9 @@
-import React from 'react';
-import useFirebase from '../hooks/useFirebase';
+import useAuth from '../hooks/useAuth';
 import img from "../imgs/5645031.jpg"
 
+
 const Login = () => {
-    const { user, error, isRegis, loginEmailPassword, handleCheckBox, googleSignIn, gitSignIn, handleCreatUser, handleEmail, handlePassword } = useFirebase();
+    const { user, error, isRegis, loginEmailPassword, handleCheckBox, googleSignIn, gitSignIn, handleCreatUser, handleEmail, handlePassword } = useAuth();
     console.log(user);
     console.log(error.code);
     return (

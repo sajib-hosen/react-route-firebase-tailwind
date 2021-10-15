@@ -1,20 +1,18 @@
 import React from 'react';
 import { Link as NavLink } from 'react-router-dom';
+import useFirebase from '../hooks/useFirebase';
 
 const Navigation = () => {
-    const navCss = {
-        backgroundColor: "#4B0082",
-        color: "red"
-    }
+    const { logOut } = useFirebase();
     return (
         <div>
             <ul className='flex space-x-4 bg-gray-600'>
-                <li className='text-white hover:bg-indigo-500'><NavLink to="/home" activeStyle={navCss}>Home</NavLink></li>
-                <li className='text-white hover:bg-indigo-500'><NavLink to="/meals" activeStyle={navCss}>Meals</NavLink></li>
-                <li className='text-white hover:bg-indigo-500'><NavLink to="/myOrders" activeStyle={navCss}>My Order</NavLink></li>
-                <li className='text-white hover:bg-indigo-500'><NavLink to="/profile" activeStyle={navCss}>Profile</NavLink></li>
-                <li className='text-white hover:bg-indigo-500'><NavLink to="/about-us" activeStyle={navCss}>About Us</NavLink></li>
-                <li className='text-white hover:bg-indigo-500'><NavLink to="/logout" activeStyle={navCss}>logout</NavLink></li>
+                <li className='text-white hover:bg-indigo-500'><NavLink to="/home">Home</NavLink></li>
+                <li className='text-white hover:bg-indigo-500'><NavLink to="/meals">Meals</NavLink></li>
+                <li className='text-white hover:bg-indigo-500'><NavLink to="/myOrders">My Order</NavLink></li>
+                <li className='text-white hover:bg-indigo-500'><NavLink to="/profile">Profile</NavLink></li>
+                <li className='text-white hover:bg-indigo-500'><NavLink to="/about-us">About Us</NavLink></li>
+                <li><button onClick={ logOut }>Log Out</button></li>
             </ul>
         </div>
     );
